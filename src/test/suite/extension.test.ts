@@ -9,7 +9,7 @@ suite("Notebook MCP extension", () => {
   suiteSetup(async () => {
     await vscode.workspace.getConfiguration("notebookMcp").update("port", port, vscode.ConfigurationTarget.Global);
     await vscode.workspace.getConfiguration("notebookMcp").update("enabled", true, vscode.ConfigurationTarget.Global);
-    const extension = vscode.extensions.getExtension("local.vscode-notebook-mcp");
+    const extension = vscode.extensions.getExtension("soralnv.vscode-notebook-mcp");
     await extension?.activate();
   });
 

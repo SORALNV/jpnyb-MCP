@@ -2,7 +2,13 @@ out/**
 src/**
 node_modules/**
 .vscode/**
+.vscode-test/**
+.github/**
 .eslintrc.cjs
 tsconfig.json
 esbuild.mjs
+package-lock.json
+SECURITY.md
+.gitignore
 *.vsix
+dist/**/*.map

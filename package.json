@@ -3,13 +3,31 @@
   "displayName": "Notebook MCP",
   "description": "Read-only MCP server for the active VS Code notebook.",
   "version": "0.1.0",
-  "publisher": "local",
+  "publisher": "soralnv",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SORALNV/jpnyb-MCP.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SORALNV/jpnyb-MCP/issues"
+  },
+  "homepage": "https://github.com/SORALNV/jpnyb-MCP#readme",
   "engines": {
     "vscode": "^1.100.0"
   },
   "categories": [
     "Other"
+  ],
+  "keywords": [
+    "mcp",
+    "notebook",
+    "jupyter",
+    "codex",
+    "vscode"
+  ],
+  "extensionKind": [
+    "ui"
   ],
   "main": "./dist/extension.js",
   "activationEvents": [
@@ -83,11 +101,20 @@
   "scripts": {
     "clean": "rimraf dist out",
     "compile": "tsc -p .",
-    "package": "node esbuild.mjs",
+    "bundle": "node esbuild.mjs",
+    "package": "npm run bundle",
+    "vscode:prepublish": "npm run bundle -- --production",
     "lint": "eslint src --ext .ts",
     "test:unit": "npm run compile && mocha --ui tdd \"out/test/unit/**/*.test.js\"",
     "test:integration": "npm run compile && node ./out/test/runTest.js",
-    "test": "npm run lint && npm run test:unit"
+    "check": "npm run lint && npm run test:unit",
+    "test": "npm run check",
+    "test:all": "npm run check && npm run test:integration",
+    "vsix": "npm run check && vsce package --out vscode-notebook-mcp-${npm_package_version}.vsix",
+    "vsix:install": "code --install-extension vscode-notebook-mcp-${npm_package_version}.vsix --force",
+    "vsix:uninstall": "code --uninstall-extension soralnv.vscode-notebook-mcp",
+    "publish:marketplace": "npm run test:all && vsce publish",
+    "publish:dry-run": "npm run check && vsce package --out /tmp/vscode-notebook-mcp-${npm_package_version}.vsix"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
@@ -100,6 +127,7 @@
     "@typescript-eslint/eslint-plugin": "^8.34.0",
     "@typescript-eslint/parser": "^8.34.0",
     "@vscode/test-electron": "^3.0.0",
+    "@vscode/vsce": "^3.6.0",
     "esbuild": "^0.28.1",
     "eslint": "^8.57.1",
     "glob": "^11.0.3",

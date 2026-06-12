@@ -22,6 +22,24 @@ http://127.0.0.1:47321/mcp
 
 サーバーは `127.0.0.1` のみに bind します。`/mcp` 以外の path は 404 になります。
 
+## インストール
+
+通常の VS Code 拡張として使う場合は、VSIX を作成してインストールします。
+
+```bash
+npm install
+npm run vsix
+code --install-extension vscode-notebook-mcp-0.1.0.vsix --force
+```
+
+アンインストールする場合:
+
+```bash
+npm run vsix:uninstall
+```
+
+VS Code の Extensions view から入れる場合は、`...` メニューの `Install from VSIX...` で `vscode-notebook-mcp-0.1.0.vsix` を選択してください。
+
 ## Codex 設定例
 
 VS Code のコマンドパレットから `Notebook MCP: Copy Codex Config` を実行すると、現在の port を反映した TOML をコピーできます。
@@ -94,3 +112,31 @@ npm run test:integration
 2. code cell を実行する
 3. `get_last_executed_cell` と `get_recent_execution_history` が更新されることを確認する
 4. Codex に TOML 設定を追加し、live notebook に問い合わせる
+
+## 配布
+
+配布前の確認:
+
+```bash
+npm run check
+npm run test:integration
+npm run publish:dry-run
+```
+
+GitHub Release 用の VSIX を作る場合:
+
+```bash
+npm run vsix
+```
+
+Marketplace に公開する場合:
+
+1. Visual Studio Marketplace で publisher `soralnv` を作成する
+2. Personal Access Token を用意する
+3. ローカルから公開する場合は `VSCE_PAT` を設定して実行する
+
+```bash
+VSCE_PAT=... npm run publish:marketplace
+```
+
+GitHub Actions では、`VSCE_PAT` secret が設定されている場合だけ Marketplace publish を実行します。タグ `v0.1.0` のような `v*.*.*` を push すると VSIX を GitHub Release asset として添付します。
