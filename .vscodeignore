@@ -1,0 +1,8 @@
+out/**
+src/**
+node_modules/**
+.vscode/**
+.eslintrc.cjs
+tsconfig.json
+esbuild.mjs
+*.vsix

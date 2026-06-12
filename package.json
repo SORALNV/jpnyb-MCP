@@ -1,0 +1,110 @@
+{
+  "name": "vscode-notebook-mcp",
+  "displayName": "Notebook MCP",
+  "description": "Read-only MCP server for the active VS Code notebook.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "notebookMcp.startServer",
+        "title": "Notebook MCP: Start Server"
+      },
+      {
+        "command": "notebookMcp.stopServer",
+        "title": "Notebook MCP: Stop Server"
+      },
+      {
+        "command": "notebookMcp.showCurrentContext",
+        "title": "Notebook MCP: Show Current Context"
+      },
+      {
+        "command": "notebookMcp.copyCodexConfig",
+        "title": "Notebook MCP: Copy Codex Config"
+      },
+      {
+        "command": "notebookMcp.copyAgentsSnippet",
+        "title": "Notebook MCP: Copy AGENTS.md Snippet"
+      }
+    ],
+    "configuration": {
+      "title": "Notebook MCP",
+      "properties": {
+        "notebookMcp.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Start the read-only notebook MCP server automatically."
+        },
+        "notebookMcp.port": {
+          "type": "number",
+          "default": 47321,
+          "minimum": 1,
+          "maximum": 65535,
+          "description": "Local port for the notebook MCP server."
+        },
+        "notebookMcp.maxCharsPerCell": {
+          "type": "number",
+          "default": 4000,
+          "minimum": 100,
+          "maximum": 200000,
+          "description": "Maximum source characters exposed per notebook cell."
+        },
+        "notebookMcp.maxOutputChars": {
+          "type": "number",
+          "default": 2000,
+          "minimum": 100,
+          "maximum": 200000,
+          "description": "Maximum output characters exposed per text-like output item."
+        },
+        "notebookMcp.includeOutputs": {
+          "type": "boolean",
+          "default": true,
+          "description": "Expose text previews for notebook outputs. Disable this if outputs may contain secrets or private data."
+        },
+        "notebookMcp.readOnly": {
+          "type": "boolean",
+          "default": true,
+          "description": "Informational v1 setting. This extension only registers read-only tools."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "clean": "rimraf dist out",
+    "compile": "tsc -p .",
+    "package": "node esbuild.mjs",
+    "lint": "eslint src --ext .ts",
+    "test:unit": "npm run compile && mocha --ui tdd \"out/test/unit/**/*.test.js\"",
+    "test:integration": "npm run compile && node ./out/test/runTest.js",
+    "test": "npm run lint && npm run test:unit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.0.0",
+    "@types/vscode": "^1.100.0",
+    "@typescript-eslint/eslint-plugin": "^8.34.0",
+    "@typescript-eslint/parser": "^8.34.0",
+    "@vscode/test-electron": "^3.0.0",
+    "esbuild": "^0.28.1",
+    "eslint": "^8.57.1",
+    "glob": "^11.0.3",
+    "mocha": "^11.7.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^6.0.3"
+  }
+}
